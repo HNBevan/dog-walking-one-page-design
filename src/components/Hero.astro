@@ -139,35 +139,28 @@
   }
 
   if (!reduceMotion && hero && textPanel && videoPanel && window.innerWidth >= 1024) {
-    const restWidth = videoPanel.getBoundingClientRect().width;
-    gsap.set(videoPanel, { position: "absolute", top: 0, right: 0, bottom: 0, width: restWidth });
+    const textWidth = textPanel.getBoundingClientRect().width;
+
+    // clipPath is GPU-composited; animating width forces layout reflow every frame
+    gsap.set(videoPanel, {
+      position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+      clipPath: `inset(0 0 0 ${textWidth}px)`,
+    });
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: hero,
         start: "top top",
         end: "+=85%",
-        scrub: 1,
+        scrub: 0.4,
         pin: true,
         anticipatePin: 1,
       },
     });
 
     tl.to(scrollCue, { opacity: 0, duration: 0.15, ease: "power1.out" }, 0)
-      .to(
-        textPanel,
-        { opacity: 0, xPercent: -12, ease: "expo.out", duration: 1 },
-        0,
-      )
-      .to(
-        videoPanel,
-        { width: window.innerWidth, ease: "expo.out", duration: 1 },
-        0,
-      )
-      .to(
-        curveMask,
-        { opacity: 0, ease: "expo.out", duration: 0.5 },
-        0,
-      );
+      .to(textPanel, { opacity: 0, xPercent: -12, ease: "expo.out", duration: 1 }, 0)
+      .to(videoPanel, { clipPath: "inset(0 0 0 0px)", ease: "expo.out", duration: 1 }, 0)
+      .to(curveMask, { opacity: 0, ease: "expo.out", duration: 0.5 }, 0);
   }
 </script>

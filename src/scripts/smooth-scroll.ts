@@ -9,8 +9,7 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 
 if (!reduceMotion) {
   const lenis = new Lenis({
-    duration: 1.1,
-    easing: (t: number) => 1 - Math.pow(1 - t, 4),
+    lerp: 0.085,
     smoothWheel: true,
   });
 

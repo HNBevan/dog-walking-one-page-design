@@ -3,9 +3,14 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 if (!reduceMotion) {
   const items = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
 
+  // Only hide elements that are below the fold. Elements already in the
+  // viewport when the script runs must stay visible to avoid a flash where
+  // they briefly disappear then animate back in.
   items.forEach((el, i) => {
-    el.classList.add("reveal-pending");
-    el.style.transitionDelay = `${Math.min(i % 4, 3) * 70}ms`;
+    if (el.getBoundingClientRect().top > window.innerHeight * 0.85) {
+      el.classList.add("reveal-pending");
+      el.style.transitionDelay = `${Math.min(i % 4, 3) * 70}ms`;
+    }
   });
 
   const observer = new IntersectionObserver(
