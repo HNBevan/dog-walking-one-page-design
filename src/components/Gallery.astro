@@ -1,15 +1,16 @@
 ---
+const base = import.meta.env.BASE_URL;
 const photos = [
-  { src: "/dog-one.jpg", alt: "Dog on a walk at The Leas", caption: "The Leas" },
-  { src: "/dog-two.jpg", alt: "Dog on a walk at Radnor Park", caption: "Radnor Park" },
+  { src: `${base}dog-one.jpg`, alt: "Dog on a walk at The Leas", caption: "The Leas" },
+  { src: `${base}dog-two.jpg`, alt: "Dog on a walk at Radnor Park", caption: "Radnor Park" },
   {
-    src: "/dog-three.jpg",
+    src: `${base}dog-three.jpg`,
     alt: "Dog on a walk at East Cliff and Warren Country Park",
     caption: "East Cliff and Warren",
   },
-  { src: "/dog-four.jpg", alt: "Dog on a walk at Folkestone Downs", caption: "Folkestone Downs" },
-  { src: "/dog-five.jpg", alt: "Dog on a walk at Lyminge Forest", caption: "Lyminge Forest" },
-  { src: "/dog-six.jpg", alt: "Dog on a walk at Capel-le-Ferne", caption: "Capel-le-Ferne" },
+  { src: `${base}dog-four.jpg`, alt: "Dog on a walk at Folkestone Downs", caption: "Folkestone Downs" },
+  { src: `${base}dog-five.jpg`, alt: "Dog on a walk at Lyminge Forest", caption: "Lyminge Forest" },
+  { src: `${base}dog-six.jpg`, alt: "Dog on a walk at Capel-le-Ferne", caption: "Capel-le-Ferne" },
 ];
 ---
 
