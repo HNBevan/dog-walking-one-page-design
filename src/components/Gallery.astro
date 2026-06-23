@@ -1,5 +1,5 @@
 ---
-const base = import.meta.env.BASE_URL;
+const base = (import.meta.env.BASE_URL + '/').replace(/\/\/$/, '/');
 const photos = [
   { src: `${base}dog-one.jpg`, alt: "Dog on a walk at The Leas", caption: "The Leas" },
   { src: `${base}dog-two.jpg`, alt: "Dog on a walk at Radnor Park", caption: "Radnor Park" },
