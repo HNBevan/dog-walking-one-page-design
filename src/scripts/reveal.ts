@@ -9,7 +9,10 @@ if (!reduceMotion) {
   items.forEach((el, i) => {
     if (el.getBoundingClientRect().top > window.innerHeight * 0.85) {
       el.classList.add("reveal-pending");
-      el.style.transitionDelay = `${Math.min(i % 4, 3) * 70}ms`;
+      // Media elements (images, videos) all appear together — no stagger
+      if (el.getAttribute("data-reveal") !== "media") {
+        el.style.transitionDelay = `${Math.min(i % 4, 3) * 70}ms`;
+      }
     }
   });
 
