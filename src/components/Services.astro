@@ -1,0 +1,154 @@
+---
+const services = [
+  {
+    name: "Solo Walk",
+    meta: "60 minutes",
+    price: "£28",
+    description: "One on one, your dog's pace, the regular route or somewhere new each week.",
+  },
+  {
+    name: "Pack Walk",
+    meta: "45 minutes, max 3 dogs",
+    price: "£18",
+    description: "Small, compatibility-matched groups. Never more than three dogs per walker.",
+  },
+  {
+    name: "Puppy Visit",
+    meta: "30 minutes",
+    price: "£15",
+    description: "Toilet breaks, short play, and a familiar face while your puppy settles into routine.",
+  },
+  {
+    name: "Estate Stay",
+    meta: "Overnight, in your home",
+    price: "from £65",
+    description: "Your dog stays in their own home, walked and fed on their normal schedule overnight.",
+  },
+  {
+    name: "Consultation",
+    meta: "30 minutes, at your home",
+    price: "Complimentary",
+    description: "A home visit before we ever take the lead, so your dog meets us on their own ground first.",
+  },
+];
+---
+
+<section id="services" class="relative bg-estate-black py-24 md:py-32 lg:py-40">
+  <div class="mx-auto max-w-[1400px] px-5 md:px-10 lg:px-16">
+    <h2 data-split-reveal class="text-display-section text-balance-display">
+      What Care Costs.
+    </h2>
+
+    <div class="mt-10 lg:mt-16 grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-10 lg:gap-16 items-start">
+      <div data-reveal class="services-video-frame aspect-[4/5] overflow-hidden bg-estate-black-soft">
+        <video
+          class="services-video h-full w-full object-cover"
+          src="/price-dog.mp4"
+          muted
+          loop
+          playsinline
+          preload="none"
+          aria-hidden="true"
+        ></video>
+      </div>
+
+      <ul>
+        {
+          services.map((service, i) => (
+            <li
+              data-reveal
+              class:list={[
+                "service-row group relative grid items-baseline gap-x-6 py-6 md:py-7 cursor-default",
+                i > 0 && "border-t border-chalk-white/15",
+              ]}
+              tabindex="0"
+            >
+              <div class="flex flex-col gap-1 min-w-0">
+                <span class="font-display text-2xl md:text-3xl font-semibold text-chalk-white">
+                  {service.name}
+                </span>
+                <span class="text-sm text-stone">{service.meta}</span>
+              </div>
+
+              <p class="service-row__desc text-sm md:text-base text-stone-light leading-relaxed">
+                {service.description}
+              </p>
+
+              <span class="service-row__price font-display text-xl md:text-2xl font-semibold text-heath-tan whitespace-nowrap">
+                {service.price}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Track sizes never change on interaction (only opacity/transform do),
+     so hovering can't reflow the row, shift the cursor off it, or flicker. */
+  .service-row {
+    grid-template-columns: 1fr 1.3fr auto;
+    column-gap: 1.5rem;
+  }
+
+  .service-row__desc {
+    max-width: 60ch;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.4s var(--ease-estate), transform 0.4s var(--ease-estate);
+  }
+
+  .service-row:hover .service-row__desc,
+  .service-row:focus-within .service-row__desc,
+  .service-row:focus-visible .service-row__desc {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Below lg, the asymmetric two-column grid collapses and the hover
+     reveal has no pointer affordance, so the description stays put. */
+  @media (max-width: 1023px) {
+    .service-row {
+      grid-template-columns: 1fr auto !important;
+      grid-template-areas: "name price" "desc desc";
+      column-gap: 1rem;
+    }
+    .service-row > div:first-child { grid-area: name; }
+    .service-row__price { grid-area: price; }
+    .service-row__desc {
+      grid-area: desc;
+      max-width: none;
+      opacity: 1 !important;
+      transform: none !important;
+      margin-top: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const video = document.querySelector<HTMLVideoElement>(".services-video");
+
+  if (video) {
+    if (reduceMotion) {
+      video.preload = "metadata";
+    } else {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              video.preload = "auto";
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+        },
+        { threshold: 0.25 },
+      );
+      observer.observe(video);
+    }
+  }
+</script>

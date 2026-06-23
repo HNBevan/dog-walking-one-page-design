@@ -1,0 +1,346 @@
+---
+const services = ["Solo Walk", "Pack Walk", "Puppy Visit", "Estate Stay", "Not sure yet"];
+---
+
+<dialog id="booking-dialog" class="booking-dialog" aria-labelledby="booking-dialog-title">
+  <div class="booking-dialog__panel">
+    <button type="button" class="booking-dialog__close" data-close-booking aria-label="Close booking form">
+      &#10005;
+    </button>
+
+    <div class="booking-dialog__scroll" data-lenis-prevent>
+      <h2 id="booking-dialog-title" class="text-display-sub pr-10">Tell Us About Your Dog.</h2>
+
+      <form id="booking-form" novalidate class="mt-8 space-y-7">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-7">
+          <div class="field">
+            <label for="name" class="field-label">Your name</label>
+            <input id="name" name="name" type="text" required class="field-input" autocomplete="name" />
+            <p class="field-error" data-error-for="name" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="email" class="field-label">Email</label>
+            <input id="email" name="email" type="email" required class="field-input" autocomplete="email" />
+            <p class="field-error" data-error-for="email" role="alert"></p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-7">
+          <div class="field">
+            <label for="phone" class="field-label">Phone</label>
+            <input id="phone" name="phone" type="tel" required class="field-input" autocomplete="tel" />
+            <p class="field-error" data-error-for="phone" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="service" class="field-label">Service</label>
+            <select id="service" name="service" required class="field-input">
+              <option value="" disabled selected>Choose one</option>
+              {services.map((service) => <option value={service}>{service}</option>)}
+            </select>
+            <p class="field-error" data-error-for="service" role="alert"></p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-7">
+          <div class="field">
+            <label for="breed" class="field-label">Dog's breed</label>
+            <input id="breed" name="breed" type="text" class="field-input" />
+            <p class="field-error" data-error-for="breed" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="age" class="field-label">Dog's age</label>
+            <input id="age" name="age" type="text" class="field-input" />
+            <p class="field-error" data-error-for="age" role="alert"></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="message" class="field-label">About your dog</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            class="field-input resize-none"
+            aria-describedby="message-help"
+          ></textarea>
+          <p id="message-help" class="field-help">Temperament, routine, and anything we should know before the first visit.</p>
+        </div>
+      </form>
+
+      <div id="booking-success" class="success-panel hidden" role="status">
+        <p class="text-stone-light max-w-[42ch]">
+          We've received your details and will call within one business day to arrange your
+          free consultation.
+        </p>
+      </div>
+    </div>
+
+    <div id="booking-footer" class="booking-dialog__footer">
+      <button type="submit" form="booking-form" class="cta-button group">
+        <span class="cta-button__fill"></span>
+        <span class="relative z-10 flex items-center justify-between gap-6">
+          Book a Consultation
+          <span class="cta-button__arrow" aria-hidden="true">&#8594;</span>
+        </span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .booking-dialog {
+    width: min(640px, calc(100vw - 2.5rem));
+    max-height: min(88dvh, 880px);
+    overflow: hidden;
+    border: none;
+    padding: 0;
+    margin: auto;
+    background: var(--color-estate-black-soft);
+    color: var(--color-chalk-white);
+  }
+
+  /* :modal only matches while genuinely shown via showModal(), so this
+     can't override the browser's default `dialog { display: none }`
+     for the closed state the way an unscoped rule would. */
+  .booking-dialog:modal {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .booking-dialog::backdrop {
+    background: oklch(10% 0.01 58 / 0.7);
+    backdrop-filter: blur(4px);
+  }
+
+  .booking-dialog__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .booking-dialog__scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 2.5rem 1.75rem;
+  }
+
+  .booking-dialog__footer {
+    flex-shrink: 0;
+    padding: 1.25rem 1.75rem 1.75rem;
+    border-top: 1px solid oklch(97% 0.006 58 / 0.14);
+    background: var(--color-estate-black-soft);
+  }
+
+  @media (min-width: 640px) {
+    .booking-dialog__scroll {
+      padding: 3rem 3rem 0;
+    }
+
+    .booking-dialog__footer {
+      padding: 1.5rem 3rem 3rem;
+    }
+  }
+
+  .booking-dialog__close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-stone);
+    color: var(--color-chalk-white);
+    background: transparent;
+    font-size: 0.9rem;
+    transition: border-color 0.3s var(--ease-estate), color 0.3s var(--ease-estate);
+  }
+
+  .booking-dialog__close:hover,
+  .booking-dialog__close:focus-visible {
+    border-color: var(--color-heath-tan);
+    color: var(--color-heath-tan);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .field-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--color-chalk-white);
+  }
+
+  .field-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-stone);
+    color: var(--color-chalk-white);
+    padding: 0.6rem 0.1rem;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    transition: border-color 0.3s var(--ease-estate);
+  }
+
+  select.field-input {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--color-stone) 50%),
+      linear-gradient(135deg, var(--color-stone) 50%, transparent 50%);
+    background-position: calc(100% - 14px) 55%, calc(100% - 9px) 55%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+  }
+
+  select.field-input option {
+    background: var(--color-estate-black);
+    color: var(--color-chalk-white);
+  }
+
+  .field-input:hover {
+    border-color: var(--color-stone-light);
+  }
+
+  .field-input:focus-visible {
+    outline: none;
+    border-color: var(--color-heath-tan);
+  }
+
+  .field-help {
+    font-size: 0.8125rem;
+    color: var(--color-stone);
+  }
+
+  .field-error {
+    font-size: 0.8125rem;
+    color: var(--color-heath-tan);
+    min-height: 1.1em;
+  }
+
+  .field.has-error .field-input {
+    border-color: var(--color-heath-tan);
+  }
+
+  #booking-form {
+    perspective: 1000px;
+  }
+
+  .success-panel {
+    padding: 2.5rem 0;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { getLenis } from "../scripts/lenis-instance";
+
+  const dialog = document.querySelector<HTMLDialogElement>("#booking-dialog");
+  const dialogTitle = dialog?.querySelector<HTMLElement>("#booking-dialog-title") ?? null;
+  const form = dialog?.querySelector<HTMLFormElement>("#booking-form") ?? null;
+  const successPanel = dialog?.querySelector<HTMLElement>("#booking-success") ?? null;
+  const footer = dialog?.querySelector<HTMLElement>("#booking-footer") ?? null;
+  const ctaButton = dialog?.querySelector<HTMLButtonElement>(".cta-button") ?? null;
+  const closeButton = dialog?.querySelector<HTMLButtonElement>("[data-close-booking]") ?? null;
+  const defaultTitle = dialogTitle?.textContent ?? "Tell Us About Your Dog.";
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finePointer = window.matchMedia("(pointer: fine)").matches;
+
+  const openTriggers = document.querySelectorAll<HTMLElement>(".js-open-booking");
+  openTriggers.forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      dialog?.showModal();
+      getLenis()?.stop();
+    });
+  });
+
+  closeButton?.addEventListener("click", () => dialog?.close());
+
+  dialog?.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+
+  // Covers every close path uniformly (Escape key, backdrop click, close
+  // button), since the dialog always fires "close" regardless of cause.
+  dialog?.addEventListener("close", () => {
+    getLenis()?.start();
+    // Reset to a fresh form for the next time someone opens it.
+    if (dialogTitle) dialogTitle.textContent = defaultTitle;
+    form?.classList.remove("hidden");
+    successPanel?.classList.add("hidden");
+    footer?.classList.remove("hidden");
+    form?.reset();
+  });
+
+  if (ctaButton && !reduceMotion && finePointer) {
+    const setRotateX = gsap.quickTo(ctaButton, "rotateX", { duration: 0.4, ease: "power2.out" });
+    const setRotateY = gsap.quickTo(ctaButton, "rotateY", { duration: 0.4, ease: "power2.out" });
+    const setLiftY = gsap.quickTo(ctaButton, "y", { duration: 0.4, ease: "power2.out" });
+
+    ctaButton.addEventListener("mousemove", (event) => {
+      const rect = ctaButton.getBoundingClientRect();
+      const px = (event.clientX - rect.left) / rect.width - 0.5;
+      const py = (event.clientY - rect.top) / rect.height - 0.5;
+      setRotateY(px * 6);
+      setRotateX(py * -6);
+    });
+
+    ctaButton.addEventListener("mouseenter", () => setLiftY(-4));
+    ctaButton.addEventListener("mouseleave", () => {
+      setRotateX(0);
+      setRotateY(0);
+      setLiftY(0);
+    });
+  }
+
+  const messages: Record<string, string> = {
+    name: "Tell us your name.",
+    email: "Enter a valid email address.",
+    phone: "Enter a phone number we can reach you on.",
+    service: "Choose the service you're interested in.",
+  };
+
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    let firstInvalid: HTMLInputElement | HTMLSelectElement | null = null;
+
+    for (const el of Array.from(form.elements)) {
+      if (!(el instanceof HTMLInputElement) && !(el instanceof HTMLSelectElement)) continue;
+      const fieldWrap = el.closest(".field");
+      const errorEl = form.querySelector<HTMLElement>(`[data-error-for="${el.name}"]`);
+      if (!fieldWrap || !errorEl) continue;
+
+      if (el.required && !el.checkValidity()) {
+        fieldWrap.classList.add("has-error");
+        errorEl.textContent = messages[el.name] ?? "This field is required.";
+        if (!firstInvalid) firstInvalid = el;
+      } else {
+        fieldWrap.classList.remove("has-error");
+        errorEl.textContent = "";
+      }
+    }
+
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
+
+    form.classList.add("hidden");
+    successPanel?.classList.remove("hidden");
+    footer?.classList.add("hidden");
+    if (dialogTitle) dialogTitle.textContent = "Submitted.";
+  });
+</script>

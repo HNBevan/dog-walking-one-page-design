@@ -1,0 +1,164 @@
+---
+---
+
+<section
+  id="hero"
+  class="hero relative min-h-[100dvh] grid grid-cols-1 lg:grid-cols-[47%_53%] xl:grid-cols-[50%_50%] 2xl:grid-cols-[50%_50%] overflow-hidden"
+>
+  <div class="hero-text relative flex flex-col justify-start px-5 md:px-10 lg:px-16 xl:px-20 2xl:px-24 pt-28 md:pt-32 lg:pt-24 xl:pt-[104px] 2xl:pt-[104px] pb-16 lg:pb-0">
+    <h1 class="text-display-hero text-balance-display max-w-[14ch]">
+      <span class="block font-body font-medium text-sm md:text-base tracking-[0.12em] uppercase text-stone-light mb-3">Folkestone Dog Walking</span>
+      <span class="whitespace-nowrap">One Walker.</span><br /><span class="whitespace-nowrap">Every Single</span> Time.
+    </h1>
+    <p class="mt-6 max-w-[34ch] text-base md:text-lg text-stone-light leading-relaxed">
+      Fully insured, vetted dog walking around Folkestone, for owners who don't compromise on who holds the lead.
+    </p>
+    <a
+      href="#booking"
+      class="js-open-booking mt-9 inline-flex w-fit items-center justify-center bg-chalk-white px-8 py-4 text-sm md:text-base font-medium tracking-wide text-estate-black transition-all duration-300 ease-[var(--ease-estate)] hover:bg-heath-tan hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-heath-tan"
+    >
+      Book a Consultation
+    </a>
+  </div>
+
+  <div class="hero-video relative min-h-[42vh] lg:min-h-0 overflow-hidden">
+    <div class="video-shimmer-bg absolute inset-0">
+      <div class="video-shimmer-sweep absolute inset-0"></div>
+    </div>
+    <video
+      class="hero-video__media absolute inset-0 h-full w-full object-cover object-left lg:object-[10%_center]"
+      src="/dog-hero.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      aria-hidden="true"
+    >
+    </video>
+
+    <!-- Curved left-edge overlay. Sits above the video, fills with the text-panel
+         background colour so it reads as a curved divider. GSAP fades this out
+         as the video expands to full-width, avoiding any clip-path interpolation. -->
+    <div class="hero-curve-mask absolute inset-0 hidden lg:block pointer-events-none" aria-hidden="true">
+      <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 0 0 L 20 0 C 0 25, 0 75, 20 100 L 0 100 Z" fill="oklch(16% 0.012 58)" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="absolute -bottom-0.5 left-0 right-0 pointer-events-none z-20" aria-hidden="true">
+    <svg viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" class="block w-full">
+      <path d="M 0 0 Q 720 140 1440 0 L 1440 140 L 0 140 Z" fill="oklch(97% 0.006 58)" />
+    </svg>
+  </div>
+
+  <div
+    class="hero-scroll-cue pointer-events-none absolute bottom-7 left-5 md:left-10 hidden lg:block"
+    aria-hidden="true"
+  >
+    <span class="block h-10 w-px bg-chalk-white/30">
+      <span class="block h-3 w-px bg-heath-tan scroll-cue-pulse"></span>
+    </span>
+  </div>
+</section>
+
+<style>
+  .video-shimmer-bg {
+    background: linear-gradient(
+      120deg,
+      var(--color-estate-black-soft) 0%,
+      oklch(28% 0.03 58) 30%,
+      var(--color-heath-tan-deep) 55%,
+      oklch(28% 0.03 58) 75%,
+      var(--color-estate-black-soft) 100%
+    );
+    background-size: 220% 220%;
+    animation: shimmer-drift 14s ease-in-out infinite;
+  }
+
+  .video-shimmer-sweep {
+    background: linear-gradient(
+      100deg,
+      transparent 40%,
+      oklch(97% 0.006 58 / 0.08) 50%,
+      transparent 60%
+    );
+    background-size: 220% 100%;
+    animation: shimmer-sweep 6s linear infinite;
+  }
+
+  @keyframes shimmer-drift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes shimmer-sweep {
+    0% { background-position: 120% 0%; }
+    100% { background-position: -20% 0%; }
+  }
+
+  .scroll-cue-pulse {
+    animation: cue-pulse 2.2s ease-in-out infinite;
+  }
+
+  @keyframes cue-pulse {
+    0%, 100% { transform: translateY(0); opacity: 0.4; }
+    50% { transform: translateY(26px); opacity: 1; }
+  }
+
+
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const hero = document.querySelector<HTMLElement>(".hero");
+  const textPanel = document.querySelector<HTMLElement>(".hero-text");
+  const videoPanel = document.querySelector<HTMLElement>(".hero-video");
+  const curveMask = document.querySelector<HTMLElement>(".hero-curve-mask");
+  const scrollCue = document.querySelector<HTMLElement>(".hero-scroll-cue");
+  const heroVideo = document.querySelector<HTMLVideoElement>(".hero-video__media");
+
+  if (reduceMotion) {
+    heroVideo?.removeAttribute("autoplay");
+    heroVideo?.pause();
+  }
+
+  if (!reduceMotion && hero && textPanel && videoPanel && window.innerWidth >= 1024) {
+    const restWidth = videoPanel.getBoundingClientRect().width;
+    gsap.set(videoPanel, { position: "absolute", top: 0, right: 0, bottom: 0, width: restWidth });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: hero,
+        start: "top top",
+        end: "+=85%",
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+      },
+    });
+
+    tl.to(scrollCue, { opacity: 0, duration: 0.15, ease: "power1.out" }, 0)
+      .to(
+        textPanel,
+        { opacity: 0, xPercent: -12, filter: "blur(6px)", ease: "expo.out", duration: 1 },
+        0,
+      )
+      .to(
+        videoPanel,
+        { width: window.innerWidth, ease: "expo.out", duration: 1 },
+        0,
+      )
+      .to(
+        curveMask,
+        { opacity: 0, ease: "expo.out", duration: 0.5 },
+        0,
+      );
+  }
+</script>

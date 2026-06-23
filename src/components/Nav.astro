@@ -1,0 +1,48 @@
+---
+---
+
+<header
+  class="site-nav fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-5 md:px-10 py-5 md:py-6 bg-estate-black/85 backdrop-blur-sm border-b border-chalk-white/10"
+>
+  <a
+    href="#top"
+    class="font-display font-bold text-lg md:text-xl tracking-[-0.01em] text-chalk-white"
+  >
+    Hound &amp; Heath
+  </a>
+  <a
+    href="#booking"
+    class="js-open-booking inline-flex items-center border border-chalk-white/30 px-4 py-2 text-sm font-medium tracking-wide text-chalk-white transition-colors duration-300 ease-[var(--ease-estate)] hover:border-heath-tan hover:text-heath-tan focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-heath-tan"
+  >
+    Book a Consultation
+  </a>
+</header>
+
+<style>
+  .site-nav {
+    transition: padding 0.4s var(--ease-estate), background-color 0.4s var(--ease-estate),
+      border-color 0.4s var(--ease-estate);
+  }
+
+  .site-nav.nav-scrolled {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    background-color: oklch(16% 0.012 58 / 0.96);
+    border-color: oklch(97% 0.006 58 / 0.14);
+  }
+</style>
+
+<script>
+  const nav = document.querySelector<HTMLElement>(".site-nav");
+  const sentinel = document.querySelector<HTMLElement>("#scroll-sentinel");
+
+  if (nav && sentinel) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        nav.classList.toggle("nav-scrolled", !entry.isIntersecting);
+      },
+      { threshold: 0 },
+    );
+    observer.observe(sentinel);
+  }
+</script>

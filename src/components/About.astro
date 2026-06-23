@@ -1,0 +1,96 @@
+---
+---
+
+<section id="about" class="relative bg-chalk-white text-estate-black py-24 md:py-32 lg:py-40 -mt-0.5">
+  <div class="mx-auto max-w-[1400px] px-5 md:px-10 lg:px-16">
+    <h2 data-split-reveal class="text-display-section">
+      We Treat Your Dog<br /> As One Of Ours.
+    </h2>
+
+    <div class="mt-12 lg:mt-20 grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-10 lg:gap-16 items-start">
+      <div data-reveal class="space-y-6 text-base md:text-lg leading-relaxed max-w-[62ch] lg:order-1">
+        <p>
+          When you hand us the lead, you're not hiring a service, you're introducing us to a
+          member of your family. We take that introduction seriously. Every dog gets one named,
+          dedicated walker who learns their routine, their quirks, and the things that make them
+          anxious or excited, the same way we'd want to be known by someone looking after our own.
+        </p>
+        <p>
+          Walks are scheduled around your dog's energy, not a route algorithm. Every visit is
+          logged and photographed, so you're never left guessing what happened between the front
+          door and the front door. Full public liability insurance and DBS-checked walkers are
+          standard here, not an upsell.
+        </p>
+        <p class="text-stone font-medium">
+          No rotating cast of strangers. No app dispatching whoever's nearest. Just the same
+          person, getting to know your dog the way we'd want someone to know ours.
+        </p>
+      </div>
+
+      <figure data-reveal class="lg:order-2">
+        <div class="about-video-frame aspect-[3/2] overflow-hidden bg-estate-black">
+          <video
+            class="about-video h-[130%] w-full object-cover"
+            src="/dogs-playing.mp4"
+            muted
+            loop
+            playsinline
+            preload="none"
+            aria-hidden="true"
+          ></video>
+        </div>
+        <figcaption class="mt-3 text-sm text-stone">Off-lead time during a pack walk.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const video = document.querySelector<HTMLVideoElement>(".about-video");
+  const frame = document.querySelector<HTMLElement>(".about-video-frame");
+
+  if (video) {
+    if (reduceMotion) {
+      video.preload = "metadata";
+      gsap.set(video, { yPercent: -28 });
+    } else {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              video.preload = "auto";
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+        },
+        { threshold: 0.25 },
+      );
+      observer.observe(video);
+
+      if (frame) {
+        gsap.fromTo(
+          video,
+          { yPercent: -28 },
+          {
+            yPercent: 2,
+            ease: "none",
+            scrollTrigger: {
+              trigger: frame,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          },
+        );
+      }
+    }
+  }
+</script>

@@ -1,0 +1,108 @@
+---
+const photos = [
+  { src: "/dog-one.jpg", alt: "Dog on a walk at The Leas", caption: "The Leas" },
+  { src: "/dog-two.jpg", alt: "Dog on a walk at Radnor Park", caption: "Radnor Park" },
+  {
+    src: "/dog-three.jpg",
+    alt: "Dog on a walk at East Cliff and Warren Country Park",
+    caption: "East Cliff and Warren",
+  },
+  { src: "/dog-four.jpg", alt: "Dog on a walk at Folkestone Downs", caption: "Folkestone Downs" },
+  { src: "/dog-five.jpg", alt: "Dog on a walk at Lyminge Forest", caption: "Lyminge Forest" },
+  { src: "/dog-six.jpg", alt: "Dog on a walk at Capel-le-Ferne", caption: "Capel-le-Ferne" },
+];
+---
+
+<section id="gallery" class="relative bg-estate-black py-24 md:py-32 lg:py-40 overflow-hidden">
+  <div class="mx-auto max-w-[1400px] px-5 md:px-10 lg:px-16 flex items-end justify-between gap-6">
+    <h2 data-split-reveal class="text-display-section text-balance-display">
+      Some Of The Dogs We Walk.
+    </h2>
+
+    <div class="hidden sm:flex items-center gap-3">
+      <button type="button" class="gallery-nav" data-gallery-prev aria-label="Previous photo">
+        &#8592;
+      </button>
+      <button type="button" class="gallery-nav" data-gallery-next aria-label="Next photo">
+        &#8594;
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="gallery-track mt-10 lg:mt-16 flex gap-5 md:gap-7 overflow-x-auto px-5 md:px-10 lg:px-16"
+    data-lenis-prevent
+    role="region"
+    aria-label="Photos of dogs on Hound & Heath walks"
+    tabindex="0"
+  >
+    {
+      photos.map((photo, i) => (
+        <figure
+          data-reveal
+          class:list={["gallery-item flex-none w-[72vw] sm:w-[42vw] lg:w-[26vw]", i === 0 && "lg:ml-0"]}
+        >
+          <div class="aspect-[4/5] overflow-hidden bg-estate-black-soft">
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              class="h-full w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="mt-3 text-sm text-stone">{photo.caption}</figcaption>
+        </figure>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .gallery-track {
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .gallery-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gallery-item {
+    scroll-snap-align: start;
+  }
+
+  .gallery-nav {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-stone);
+    color: var(--color-chalk-white);
+    background: transparent;
+    transition: border-color 0.3s var(--ease-estate), color 0.3s var(--ease-estate);
+  }
+
+  .gallery-nav:hover,
+  .gallery-nav:focus-visible {
+    border-color: var(--color-heath-tan);
+    color: var(--color-heath-tan);
+  }
+</style>
+
+<script>
+  const track = document.querySelector<HTMLElement>(".gallery-track");
+  const prevBtn = document.querySelector<HTMLButtonElement>("[data-gallery-prev]");
+  const nextBtn = document.querySelector<HTMLButtonElement>("[data-gallery-next]");
+
+  if (track && prevBtn && nextBtn) {
+    const scrollByStep = (direction: 1 | -1) => {
+      const item = track.querySelector<HTMLElement>(".gallery-item");
+      const step = item ? item.getBoundingClientRect().width + 20 : track.clientWidth * 0.8;
+      track.scrollBy({ left: step * direction, behavior: "smooth" });
+    };
+
+    prevBtn.addEventListener("click", () => scrollByStep(-1));
+    nextBtn.addEventListener("click", () => scrollByStep(1));
+  }
+</script>

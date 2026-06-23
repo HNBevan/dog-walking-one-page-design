@@ -1,0 +1,58 @@
+---
+const reviews = [
+  {
+    quote:
+      "Our last walker changed every few weeks and our terrier hated it. Six months in with the same person now, and she waits by the door for him.",
+    name: "Eleanor Pryce",
+    place: "Sandgate",
+  },
+  {
+    quote:
+      "They noticed our dog was favouring a leg before we did, and called straight after the walk. That's not something an app tells you.",
+    name: "Marcus Adeyemi",
+    place: "Folkestone",
+  },
+  {
+    quote:
+      "Booked the consultation expecting a sales pitch. Got someone asking real questions about our dog's anxiety instead.",
+    name: "Tom Whitfield",
+    place: "Capel-le-Ferne",
+  },
+];
+---
+
+<section id="reviews" class="relative bg-chalk-white text-estate-black py-24 md:py-32 lg:py-40">
+  <div class="mx-auto max-w-[1400px] px-5 md:px-10 lg:px-16">
+    <h2 data-split-reveal class="text-display-section text-balance-display">
+      In Their Own Words.
+    </h2>
+
+    <ul class="mt-16 lg:mt-24">
+      {
+        reviews.map((review, i) => (
+          <li
+            data-reveal
+            class:list={[
+              "py-12 md:py-14 border-t border-estate-black/15 first:border-t-0 first:pt-0",
+              i === 1 ? "lg:ml-[28%]" : i === 2 ? "lg:ml-[14%]" : "",
+            ]}
+          >
+            <p
+              class:list={[
+                "font-display text-balance leading-[1.2] tracking-[-0.01em] text-estate-black",
+                i === 0
+                  ? "text-2xl md:text-3xl lg:text-4xl max-w-[34ch]"
+                  : "text-xl md:text-2xl max-w-[30ch]",
+              ]}
+            >
+              &#8220;{review.quote}&#8221;
+            </p>
+            <p class="mt-6 text-xs uppercase tracking-[0.08em] text-stone font-medium">
+              {review.name}, {review.place}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

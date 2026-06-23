@@ -1,0 +1,78 @@
+---
+const towns = ["Folkestone", "Hythe", "Sandgate", "Cheriton", "Capel-le-Ferne", "Densole", "Dover"];
+
+const parks = [
+  {
+    name: "The Leas",
+    note: "Our most-walked route. Flat, clifftop, sea air the whole way.",
+  },
+  {
+    name: "Radnor Park",
+    note: "A reliable loop with shade, space to play, and a lake dogs love circling.",
+  },
+  {
+    name: "East Cliff and Warren Country Park",
+    note: "More adventurous ground. Steep paths and proper countryside for confident dogs.",
+  },
+  {
+    name: "Folkestone Downs",
+    note: "Open grassland on the edge of town, good for dogs who want to run.",
+  },
+  {
+    name: "Lyminge Forest",
+    note: "Booked ahead for dogs who want a longer, woodland-heavy walk.",
+  },
+];
+---
+
+<section id="area" class="relative bg-chalk-white text-estate-black py-24 md:py-32 lg:py-40">
+  <div class="mx-auto max-w-[1400px] px-5 md:px-10 lg:px-16">
+    <div class="grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-10 lg:gap-16 items-start">
+      <div>
+        <h2 data-split-reveal class="text-display-section text-balance-display">
+          Based In Folkestone. A Ten-Mile Radius.
+        </h2>
+        <p data-reveal class="mt-6 max-w-[60ch] text-base md:text-lg text-stone leading-relaxed">
+          Covering Folkestone, Hythe, Sandgate, Cheriton, and Capel-le-Ferne, with everything in
+          between.
+        </p>
+
+        <ul data-reveal class="mt-8 flex flex-wrap gap-3">
+          {
+            towns.map((town) => (
+              <li class="border border-estate-black/25 px-4 py-2 text-sm tracking-wide text-estate-black">
+                {town}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div data-reveal class="aspect-[4/3] w-full bg-estate-black">
+        <iframe
+          src="https://www.google.com/maps?q=Folkestone,+Kent,+UK&z=11&output=embed"
+          title="Map of Folkestone, Kent and the surrounding ten-mile area Hound & Heath serves"
+          class="h-full w-full border-0"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    </div>
+
+    <div class="mt-20 lg:mt-28">
+      <h3 data-split-reveal class="text-display-sub">Their Regular Routes</h3>
+      <div data-reveal class="mt-8 columns-1 sm:columns-2 gap-x-12">
+        {
+          parks.map((park) => (
+            <div class="mb-8 break-inside-avoid">
+              <p class="font-display text-xl md:text-2xl font-semibold text-estate-black">
+                {park.name}
+              </p>
+              <p class="mt-2 max-w-[44ch] text-stone leading-relaxed">{park.note}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,41 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import Services from "../components/Services.astro";
+import Gallery from "../components/Gallery.astro";
+import Reviews from "../components/Reviews.astro";
+import AreaCoverage from "../components/AreaCoverage.astro";
+import Booking from "../components/Booking.astro";
+import BookingModal from "../components/BookingModal.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+  title="Hound & Heath - Premium Dog Walking in Folkestone, Kent"
+  description="Insured, vetted, one-walker-per-client dog walking and home boarding within ten miles of Folkestone, Kent."
+>
+  <div id="top" style="overflow-x: clip;">
+    <div id="scroll-sentinel" class="absolute top-0 left-0 h-20 w-px" aria-hidden="true"></div>
+    <Nav />
+    <main>
+      <Hero />
+      <About />
+      <Services />
+      <Gallery />
+      <Reviews />
+      <AreaCoverage />
+      <Booking />
+    </main>
+    <Footer />
+  </div>
+
+  <BookingModal />
+
+  <script>
+    import "../scripts/smooth-scroll.ts";
+    import "../scripts/reveal.ts";
+    import "../scripts/headline-reveal.ts";
+  </script>
+</Layout>

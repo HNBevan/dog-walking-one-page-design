@@ -1,0 +1,157 @@
+@import "tailwindcss";
+@import "@fontsource/syne/500.css";
+@import "@fontsource/syne/600.css";
+@import "@fontsource/syne/700.css";
+@import "@fontsource/syne/800.css";
+@import "@fontsource/outfit/300.css";
+@import "@fontsource/outfit/400.css";
+@import "@fontsource/outfit/500.css";
+
+@theme {
+  --color-estate-black: oklch(16% 0.012 58);
+  --color-estate-black-soft: oklch(20% 0.012 58);
+  --color-chalk-white: oklch(97% 0.006 58);
+  --color-chalk-white-dim: oklch(93% 0.007 58);
+  --color-heath-tan: oklch(64% 0.1 58);
+  --color-heath-tan-deep: oklch(48% 0.1 58);
+  --color-stone: oklch(55% 0.012 58);
+  --color-stone-light: oklch(82% 0.008 58);
+
+  --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Outfit", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-estate: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    background-color: var(--color-estate-black);
+    color: var(--color-chalk-white);
+    /* Lenis (smooth-scroll.ts) owns smoothing via JS; CSS smooth-scroll
+       would fight it and cause double-easing. */
+    scroll-behavior: auto;
+    overflow-x: hidden;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-heath-tan);
+    color: var(--color-estate-black);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Fluid display scale, tuned so the hero never clips at 320px and never
+     overshoots past a controlled ceiling on ultra-wide desktop. */
+  .text-display-hero {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 3.5vw + 1rem, 5.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  .text-display-section {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 2.6vw + 1.4rem, 4.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  .text-display-sub {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.4vw + 1.1rem, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+  }
+
+  .text-balance-display {
+    text-wrap: balance;
+  }
+
+  /* Default state is fully visible; JS only ever adds .reveal-pending
+     before swapping it for .reveal-visible, so no-JS and reduced-motion
+     visitors always see complete content. */
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-reveal].reveal-pending {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s var(--ease-estate), transform 0.7s var(--ease-estate);
+  }
+
+  [data-reveal].reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer components {
+  /* Shared massive animated CTA, used by the booking trigger and the
+     modal's submit button so both stay visually and behaviorally identical. */
+  .cta-button {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    background: var(--color-chalk-white);
+    color: var(--color-estate-black);
+    padding: 1.5rem 2rem;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: transform 0.3s var(--ease-estate);
+  }
+
+  .cta-button:focus-visible {
+    transform: translateY(-2px);
+    outline: 2px solid var(--color-heath-tan);
+    outline-offset: 3px;
+  }
+
+  .cta-button__fill {
+    position: absolute;
+    inset: 0;
+    background: var(--color-heath-tan);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.45s var(--ease-estate);
+  }
+
+  .cta-button:hover .cta-button__fill,
+  .cta-button:focus-visible .cta-button__fill {
+    transform: scaleX(1);
+  }
+
+  .cta-button__arrow {
+    display: inline-block;
+    transition: transform 0.3s var(--ease-estate);
+  }
+
+  .cta-button:hover .cta-button__arrow,
+  .cta-button:focus-visible .cta-button__arrow {
+    transform: translateX(6px);
+  }
+}
