@@ -17,6 +17,11 @@ const { title, description } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <!-- Preload above-fold hero video so it's ready the moment the page paints -->
+    <link rel="preload" as="video" type="video/mp4" href="/dog-hero.mp4" />
+    <!-- Preload first two gallery images so they're ready before the user scrolls -->
+    <link rel="preload" as="image" href="/dog-one.jpg" />
+    <link rel="preload" as="image" href="/dog-two.jpg" />
   </head>
   <body class="bg-estate-black text-chalk-white font-body">
     <slot />
