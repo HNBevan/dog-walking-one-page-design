@@ -68,8 +68,19 @@
     .hero-text {
       will-change: transform, opacity;
     }
+    /* Set position + initial clip via CSS so it's applied before first paint
+       — no gsap.set() needed, no flash when the script runs. */
     .hero-video {
-      will-change: transform;
+      position: absolute;
+      inset: 0;
+      clip-path: inset(0% 0% 0% 47%);
+      will-change: clip-path;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hero-video {
+      clip-path: inset(0% 0% 0% 50%);
     }
   }
 
@@ -139,14 +150,8 @@
   }
 
   if (!reduceMotion && hero && textPanel && videoPanel && window.innerWidth >= 1024) {
-    const textWidth = textPanel.getBoundingClientRect().width;
-
-    // clipPath is GPU-composited; animating width forces layout reflow every frame
-    gsap.set(videoPanel, {
-      position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
-      clipPath: `inset(0 0 0 ${textWidth}px)`,
-    });
-
+    // Initial position + clip-path already set in CSS — no gsap.set() here,
+    // so there is no frame where the video panel flashes full-width.
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: hero,
@@ -160,7 +165,7 @@
 
     tl.to(scrollCue, { opacity: 0, duration: 0.15, ease: "power1.out" }, 0)
       .to(textPanel, { opacity: 0, xPercent: -12, ease: "expo.out", duration: 1 }, 0)
-      .to(videoPanel, { clipPath: "inset(0 0 0 0px)", ease: "expo.out", duration: 1 }, 0)
+      .to(videoPanel, { clipPath: "inset(0% 0% 0% 0%)", ease: "expo.out", duration: 1 }, 0)
       .to(curveMask, { opacity: 0, ease: "expo.out", duration: 0.5 }, 0);
   }
 </script>
